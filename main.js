@@ -34,7 +34,17 @@ function total_rent_payments(leases, year, month) {
 }
 
 function expected_payments(leases, year, month) {
-    // Should return a list of all units, residents, and rent payments for a month.
+  // Should return a list of all units, residents, and rent payments for a month.
+  var currentDate = new Date(year, month);
+  var listArray = [];
+  leases.forEach(function (lease) {
+
+    if ((lease.start < currentDate) && (lease.end >= currentDate))  {
+      listArray.push({unit:lease.unit, name:lease.resident, rent:lease.rent});
+    }
+  });
+
+  return listArray;
 }
 
 
@@ -57,7 +67,7 @@ describe('Rentlytics Doghouse Leases', function () {
   });
 
   it('expected_payments', function () {
-      assert(expected_payments(LEASES, 2015, 1) == [
+      assert.deepEqual(expected_payments(LEASES, 2015, 1),[
               {'unit': '101', 'name': 'Bandito', 'rent': 2150},
               {'unit': '103', 'name': 'Zilla', 'rent': 1945},
               {'unit': '105', 'name': 'Cooper', 'rent': 1895}
