@@ -16,8 +16,6 @@ var LEASES = [
     new Lease('106', 'Allie', 2150, new Date(2015, 1, 1), new Date(2016, 1, 28)),
 ];
 
-var mydate = new Date(2015, 0, 1);
-console.log(mydate.getFullYear());
 
 function total_rent_payments(leases, year, month) {
   // Should return a sum of all rent payments for a month.
@@ -50,6 +48,17 @@ function expected_payments(leases, year, month) {
 
 function move_in_schedule(leases, year, month) {
     // Should return a list of leases starting in a month.
+    var currentDate = new Date(year, month);
+    var listArray = [];
+
+    leases.forEach(function (lease) {
+
+    if (JSON.stringify(lease.start) === JSON.stringify(currentDate))  {
+      listArray.push({unit:lease.unit, name:lease.resident});
+    }
+  });
+
+  return listArray;
 }
 
 // TEST SUITE SETUP - BEGIN
@@ -75,7 +84,7 @@ describe('Rentlytics Doghouse Leases', function () {
   });
 
   it('move_in_schedule', function () {
-      assert(move_in_schedule(LEASES, 2015, 1) == [
+      assert.deepEqual(move_in_schedule(LEASES, 2015, 0), [
               {'unit': '101', 'name': 'Bandito'},
               {'unit': '103', 'name': 'Zilla'}
           ]);
